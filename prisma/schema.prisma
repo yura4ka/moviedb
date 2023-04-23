@@ -1,0 +1,58 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgres"
+  url      = env("DATABASE_URL")
+}
+
+model Movie {
+  id              String      @id @default(uuid()) @db.Uuid
+  title           String      @db.VarChar(255)
+  description     String      @db.Text
+  year            Int         @db.SmallInt
+  durationMinutes Int         @db.SmallInt
+  image           String      @db.Text
+  rating          Int         @db.SmallInt
+  mpaa            MPAA
+  categories      Category[]
+  crew            MovieCrew[]
+}
+
+model Category {
+  id     String  @id @default(uuid()) @db.Uuid
+  title  String  @db.VarChar(255)
+  movies Movie[]
+}
+
+model Person {
+  id        String      @id @default(uuid()) @db.Uuid
+  name      String      @db.VarChar(255)
+  bio       String      @db.Text
+  birthday  DateTime
+  MovieCrew MovieCrew[]
+}
+
+model MovieCrew {
+  id       String  @id @default(uuid()) @db.Uuid
+  person   Person  @relation(fields: [personId], references: [id])
+  personId String  @db.Uuid
+  Movie    Movie?  @relation(fields: [movieId], references: [id])
+  movieId  String? @db.Uuid
+  role     Role
+}
+
+enum MPAA {
+  G
+  PG
+  PG_13
+  R
+  NC_17
+}
+
+enum Role {
+  DIRECTOR
+  WRITER
+  STAR
+}
