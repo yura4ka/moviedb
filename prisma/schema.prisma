@@ -13,16 +13,16 @@ model Movie {
   description     String      @db.Text
   year            Int         @db.SmallInt
   durationMinutes Int         @db.SmallInt
-  image           String      @db.Text
+  image           String?     @db.Text
   rating          Int         @db.SmallInt
   mpaa            MPAA
-  categories      Category[]
+  genres          Genre[]
   crew            MovieCrew[]
 }
 
-model Category {
+model Genre {
   id     String  @id @default(uuid()) @db.Uuid
-  title  String  @db.VarChar(255)
+  title  String  @unique @db.VarChar(255)
   movies Movie[]
 }
 

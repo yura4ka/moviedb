@@ -3,7 +3,10 @@ import type { PrismaClient } from '@prisma/client';
 
 declare global {
 	namespace App {
-		// interface Error {}
+		interface Error {
+			message: string;
+			errors?: { [x: string]: string[] | undefined };
+		}
 		// interface Locals {}
 		// interface PageData {}
 		// interface Platform {}
