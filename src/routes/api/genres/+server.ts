@@ -1,5 +1,5 @@
 import { prisma } from '$lib/server/prisma';
-import { changeGenreSchema, createGenreSchema, validIdObject } from '$lib/utils/schemas';
+import { changeGenreSchema, createGenreSchema, validGenre } from '$lib/utils/schemas';
 import { json, type RequestHandler } from '@sveltejs/kit';
 
 export const GET = (async () => {
@@ -11,8 +11,8 @@ export const POST = (async ({ request }) => {
 	const data = await request.json();
 	const { title } = createGenreSchema.parse(data);
 
-	await prisma.genre.create({ data: { title: title.trim() } });
-	return json({ success: true });
+	const { id } = await prisma.genre.create({ data: { title: title.trim() } });
+	return json({ success: true, id });
 }) satisfies RequestHandler;
 
 export const PUT = (async ({ request }) => {
@@ -25,8 +25,8 @@ export const PUT = (async ({ request }) => {
 
 export const DELETE = (async ({ request }) => {
 	const data = await request.json();
-	const { id } = validIdObject.parse(data);
+	const genre = validGenre.parse(data);
 
-	await prisma.genre.delete({ where: { id } });
+	await prisma.genre.delete({ where: genre });
 	return json({ success: true });
 }) satisfies RequestHandler;
