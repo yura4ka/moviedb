@@ -18,21 +18,21 @@ export const GET = (async ({ url }) => {
 						const [asDirector, asStar, asWriter] = await Promise.all([
 							prisma.movieCrew.findMany({
 								where: { personId: p.id, role: 'DIRECTOR' },
-								select: { Movie: { select: { id: true, title: true } } },
+								select: { movie: { select: { id: true, title: true } } },
 								take: 3,
-								orderBy: { Movie: { rating: 'desc' } }
+								orderBy: { movie: { rating: 'desc' } }
 							}),
 							prisma.movieCrew.findMany({
 								where: { personId: p.id, role: 'STAR' },
-								select: { Movie: { select: { id: true, title: true } } },
+								select: { movie: { select: { id: true, title: true } } },
 								take: 3,
-								orderBy: { Movie: { rating: 'desc' } }
+								orderBy: { movie: { rating: 'desc' } }
 							}),
 							prisma.movieCrew.findMany({
 								where: { personId: p.id, role: 'WRITER' },
-								select: { Movie: { select: { id: true, title: true } } },
+								select: { movie: { select: { id: true, title: true } } },
 								take: 3,
-								orderBy: { Movie: { rating: 'desc' } }
+								orderBy: { movie: { rating: 'desc' } }
 							})
 						]);
 						return { ...p, asDirector, asStar, asWriter };

@@ -31,16 +31,18 @@ model Person {
   name      String      @db.VarChar(255)
   bio       String      @db.Text
   birthday  DateTime
-  MovieCrew MovieCrew[]
+  movieCrew MovieCrew[]
 }
 
 model MovieCrew {
   id       String @id @default(uuid()) @db.Uuid
   person   Person @relation(fields: [personId], references: [id], onDelete: Cascade)
   personId String @db.Uuid
-  Movie    Movie  @relation(fields: [movieId], references: [id], onDelete: Cascade)
+  movie    Movie  @relation(fields: [movieId], references: [id], onDelete: Cascade)
   movieId  String @db.Uuid
   role     Role
+
+  @@unique([personId, movieId, role])
 }
 
 enum MPAA {
