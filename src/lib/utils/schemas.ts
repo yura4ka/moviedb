@@ -43,5 +43,14 @@ export const createMovieSchema = z.object({
 	genres: validGenre.array().nonempty({ message: wrongFormatMessage }),
 	crew: z.object({ personId: validUuid, role: z.enum(ROLES) }).array()
 });
-
 export const changeMovieSchema = createMovieSchema.extend({ id: validUuid });
+
+export const createPersonSchema = z.object({
+	name: validString,
+	bio: validString,
+	birthday: z.coerce
+		.date({ required_error: requiredError, invalid_type_error: wrongFormatMessage })
+		.min(new Date(1500, 0, 0), { message: wrongFormatMessage })
+		.max(new Date(), { message: wrongFormatMessage })
+});
+export const changePersonSchema = createPersonSchema.extend({ id: validUuid });
