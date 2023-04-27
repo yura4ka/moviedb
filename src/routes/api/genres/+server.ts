@@ -15,7 +15,7 @@ export const POST = (async ({ request }) => {
 	return json({ success: true, id });
 }) satisfies RequestHandler;
 
-export const PUT = (async ({ request }) => {
+export const PATCH = (async ({ request }) => {
 	const data = await request.json();
 	const { id, title } = changeGenreSchema.parse(data);
 

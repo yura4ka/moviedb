@@ -53,13 +53,17 @@ export const POST = (async ({ request }) => {
 	return json({ success: true, id });
 }) satisfies RequestHandler;
 
-export const PUT = (async ({ request }) => {
+export const PATCH = (async ({ request }) => {
 	const data = await request.json();
 	const parsed = changePersonSchema.parse(data);
 
 	await prisma.person.update({
 		where: { id: parsed.id },
-		data: { name: parsed.name.trim(), bio: parsed.bio.trim(), birthday: parsed.birthday }
+		data: {
+			name: parsed.name?.trim(),
+			bio: parsed.bio?.trim(),
+			birthday: parsed.birthday
+		}
 	});
 	return json({ success: true });
 }) satisfies RequestHandler;

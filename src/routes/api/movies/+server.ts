@@ -34,7 +34,7 @@ export const POST = (async ({ request }) => {
 	return json({ success: true });
 }) satisfies RequestHandler;
 
-export const PUT = (async ({ request }) => {
+export const PATCH = (async ({ request }) => {
 	const data = await request.json();
 	const parsed = changeMovieSchema.parse(data);
 
@@ -42,10 +42,10 @@ export const PUT = (async ({ request }) => {
 		where: { id: parsed.id },
 		data: {
 			...parsed,
-			title: parsed.title.trim(),
-			description: parsed.description.trim(),
+			title: parsed.title?.trim(),
+			description: parsed.description?.trim(),
 			genres: { set: parsed.genres },
-			crew: { deleteMany: {}, createMany: { data: parsed.crew } }
+			crew: parsed.crew ? { deleteMany: {}, createMany: { data: parsed.crew } } : undefined
 		}
 	});
 	return json({ success: true });
