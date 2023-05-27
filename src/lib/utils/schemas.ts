@@ -41,7 +41,8 @@ export const createMovieSchema = z.object({
 	mpaa: z.enum(MPAA),
 	image: validString.optional(),
 	genres: validGenre.array().nonempty({ message: wrongFormatMessage }),
-	crew: z.object({ personId: validUuid, role: z.enum(ROLES) }).array()
+	crew: z.object({ personId: validUuid, role: z.enum(ROLES) }).array(),
+	trailer: z.string().url()
 });
 export const changeMovieSchema = createMovieSchema.partial().and(validIdObject);
 

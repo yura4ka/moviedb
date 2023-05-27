@@ -15,6 +15,7 @@ model Movie {
   durationMinutes Int         @db.SmallInt
   image           String?     @db.Text
   rating          Float
+  trailer         String      @default("")
   mpaa            MPAA
   genres          Genre[]
   crew            MovieCrew[]
