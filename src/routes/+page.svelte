@@ -10,7 +10,13 @@
 	};
 </script>
 
-<div class="mt-8 grid grid-cols-[repeat(auto-fill,minmax(24rem,1fr))] place-items-center gap-6">
+<svelte:head>
+	<title>Фільми</title>
+</svelte:head>
+
+<div
+	class="mx-2 my-8 grid grid-cols-[repeat(auto-fill,minmax(20rem,1fr))] place-items-center gap-2 gap-y-12"
+>
 	{#each data.movies as m (m.id)}
 		<MovieCard data={m} />
 	{/each}

@@ -8,7 +8,7 @@
 </script>
 
 <nav>
-	<div class="mx-auto flex max-w-6xl items-center justify-between py-4">
+	<div class="mx-auto flex max-w-7xl items-center justify-between py-4">
 		<h1 class="text-4xl font-bold text-teal-700">MovieDB</h1>
 		<ul class="flex gap-6 text-xl">
 			<li><a href="/" class={generateLinkStyle('')}>Фільми</a></li>

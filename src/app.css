@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
 .img::before {
 	content: '';
 	inset: 0;
@@ -10,4 +16,7 @@
 	position: absolute;
 	background-image: var(--img);
 	z-index: -20;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: cover;
 }

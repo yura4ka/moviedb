@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Genre, Movie } from '@prisma/client';
-	import IoIosStar from 'svelte-icons/io/IoIosStar.svelte';
+	import StarIcon from './StarIcon.svelte';
 
 	export let data: Movie & {
 		genres: Genre[];
@@ -15,7 +15,7 @@
 <a
 	href="/movies/{data.id}"
 	style="--img: url({getImage()});"
-	class="img group relative flex h-[30rem] w-96 items-end overflow-hidden rounded-lg before:-z-10 before:transition-all hover:before:blur hover:before:brightness-75"
+	class="img group relative flex aspect-[300/450] w-[20rem] items-end overflow-hidden rounded-lg before:-z-10 before:transition-all hover:before:blur hover:before:brightness-75"
 >
 	<div
 		class="invisible w-full translate-y-full bg-gradient-to-b from-[rgba(255,255,255,0.7)] to-[rgba(255,255,255,0.4)] p-4 transition-all group-hover:visible group-hover:translate-y-0"
@@ -26,14 +26,9 @@
 			•
 			<span>{data.mpaa}</span>
 			•
-			<span>{data.durationMinutes} хвилин</span>
+			<span>{data.durationMinutes} хв.</span>
 			•
-			<div class="inline-flex items-center gap-1">
-				<div class="h-5 w-5 text-yellow-400">
-					<IoIosStar />
-				</div>
-				<div>{data.rating} / 10</div>
-			</div>
+			<StarIcon size={5}>{data.rating}/10</StarIcon>
 		</ul>
 		<div class="mb-4 line-clamp-5 text-lg text-stone-800">{data.description}</div>
 		<div class="mb-2 text-lg font-medium">
