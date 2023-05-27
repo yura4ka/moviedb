@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.img::before {
+	content: '';
+	inset: 0;
+	height: 100%;
+	width: 100%;
+	position: absolute;
+	background-image: var(--img);
+	z-index: -20;
+}
