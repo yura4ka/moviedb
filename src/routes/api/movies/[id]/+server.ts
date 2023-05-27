@@ -7,7 +7,7 @@ export const GET = (async ({ params }) => {
 		where: { id },
 		include: {
 			genres: true,
-			crew: { select: { person: { select: { id: true, name: true } }, role: true } }
+			crew: { select: { person: { select: { id: true, name: true, image: true } }, role: true } }
 		}
 	});
 	return json(movie);

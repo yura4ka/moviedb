@@ -13,9 +13,9 @@ model Movie {
   description     String      @db.Text
   year            Int         @db.SmallInt
   durationMinutes Int         @db.SmallInt
-  image           String?     @db.Text
+  image           String      @db.Text
   rating          Float
-  trailer         String      @default("")
+  trailer         String
   mpaa            MPAA
   genres          Genre[]
   crew            MovieCrew[]
@@ -32,6 +32,7 @@ model Person {
   name      String      @db.VarChar(255)
   bio       String      @db.Text
   birthday  DateTime
+  image     String      @default("")
   movieCrew MovieCrew[]
 }
 

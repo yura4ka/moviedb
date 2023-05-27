@@ -16,6 +16,10 @@ export const validUuid = z
 	.trim()
 	.uuid({ message: wrongFormatMessage });
 
+export const validUrl = z
+	.string({ required_error: requiredError, invalid_type_error: wrongFormatMessage })
+	.url({ message: wrongFormatMessage });
+
 export const validIdObject = z.object({ id: validUuid });
 
 export const validGenre = validIdObject.or(z.object({ title: validString }));
@@ -39,10 +43,10 @@ export const createMovieSchema = z.object({
 		.min(0, { message: wrongFormatMessage })
 		.max(10, { message: wrongFormatMessage }),
 	mpaa: z.enum(MPAA),
-	image: validString.optional(),
+	image: validUrl,
 	genres: validGenre.array().nonempty({ message: wrongFormatMessage }),
 	crew: z.object({ personId: validUuid, role: z.enum(ROLES) }).array(),
-	trailer: z.string().url()
+	trailer: validUrl
 });
 export const changeMovieSchema = createMovieSchema.partial().and(validIdObject);
 
@@ -52,6 +56,7 @@ export const createPersonSchema = z.object({
 	birthday: z.coerce
 		.date({ required_error: requiredError, invalid_type_error: wrongFormatMessage })
 		.min(new Date(1500, 0, 0), { message: wrongFormatMessage })
-		.max(new Date(), { message: wrongFormatMessage })
+		.max(new Date(), { message: wrongFormatMessage }),
+	image: validUrl
 });
 export const changePersonSchema = createPersonSchema.partial().and(validIdObject);

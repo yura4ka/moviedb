@@ -18,19 +18,19 @@ export const GET = (async ({ url }) => {
 						const [asDirector, asStar, asWriter] = await Promise.all([
 							prisma.movieCrew.findMany({
 								where: { personId: p.id, role: 'DIRECTOR' },
-								select: { movie: { select: { id: true, title: true } } },
+								select: { movie: { select: { id: true, title: true, image: true } } },
 								take: 3,
 								orderBy: { movie: { rating: 'desc' } }
 							}),
 							prisma.movieCrew.findMany({
 								where: { personId: p.id, role: 'STAR' },
-								select: { movie: { select: { id: true, title: true } } },
+								select: { movie: { select: { id: true, title: true, image: true } } },
 								take: 3,
 								orderBy: { movie: { rating: 'desc' } }
 							}),
 							prisma.movieCrew.findMany({
 								where: { personId: p.id, role: 'WRITER' },
-								select: { movie: { select: { id: true, title: true } } },
+								select: { movie: { select: { id: true, title: true, image: true } } },
 								take: 3,
 								orderBy: { movie: { rating: 'desc' } }
 							})
@@ -48,7 +48,12 @@ export const POST = (async ({ request }) => {
 	const parsed = createPersonSchema.parse(data);
 
 	const { id } = await prisma.person.create({
-		data: { name: parsed.name.trim(), bio: parsed.bio.trim(), birthday: parsed.birthday }
+		data: {
+			name: parsed.name.trim(),
+			bio: parsed.bio.trim(),
+			birthday: parsed.birthday,
+			image: parsed.image.trim()
+		}
 	});
 	return json({ success: true, id });
 }) satisfies RequestHandler;
@@ -62,7 +67,8 @@ export const PATCH = (async ({ request }) => {
 		data: {
 			name: parsed.name?.trim(),
 			bio: parsed.bio?.trim(),
-			birthday: parsed.birthday
+			birthday: parsed.birthday,
+			image: parsed.image?.trim()
 		}
 	});
 	return json({ success: true });
