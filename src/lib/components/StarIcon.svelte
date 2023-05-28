@@ -4,10 +4,12 @@
 	let className = '';
 	export { className as class };
 	export let gap = 1;
+
+	const sizeRem = `${size / 4}rem`;
 </script>
 
 <div class="flex items-center gap-{gap} {className}">
-	<div class="h-{size} w-{size} text-yellow-400">
+	<div style="width: {sizeRem}; height: {sizeRem};" class="text-yellow-400">
 		<IoIosStar />
 	</div>
 	<div><slot /></div>

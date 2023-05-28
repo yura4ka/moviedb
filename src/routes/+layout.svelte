@@ -2,9 +2,11 @@
 	import { page } from '$app/stores';
 	import '../app.css';
 
-	const currentPath = $page.url.pathname.split('/').at(-1);
-	const generateLinkStyle = (path: string) =>
+	$: currentPath = $page.url.pathname.split('/').at(-1);
+	$: generateLinkStyle = (path: string) =>
 		path === currentPath ? 'text-teal-700' : 'hover:text-teal-700 transition';
+
+	console.log(currentPath);
 </script>
 
 <nav>
