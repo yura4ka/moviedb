@@ -1,5 +1,4 @@
 <script lang="ts">
-	import MultiSelect from 'svelte-multiselect';
 	import Input from '$lib/components/Input.svelte';
 	import { createMovieSchema } from '$lib/utils/schemas';
 	import { z } from 'zod';
@@ -7,6 +6,7 @@
 	import { MPAA, type Role } from '@prisma/client';
 	import { addMovie } from '$lib/utils/api';
 	import { goto } from '$app/navigation';
+	import Select from '$lib/components/Select.svelte';
 
 	export let data: {
 		genres: { id: string; title: string }[];
@@ -51,8 +51,6 @@
 		for (const p of form.directors) crew.push({ personId: p.id, role: 'DIRECTOR' });
 		for (const p of form.writers) crew.push({ personId: p.id, role: 'WRITER' });
 		for (const p of form.actors) crew.push({ personId: p.id, role: 'STAR' });
-
-		if (!form.genres[0]) return;
 
 		const id = await addMovie({
 			title: form.title.trim(),
@@ -168,94 +166,67 @@
 				/>
 			</div>
 			<div class="grid gap-2">
-				<div>
-					<p class="mb-2 text-sm font-medium text-stone-900">MPAA</p>
-					<MultiSelect
-						bind:selected={form.mpaa}
-						maxSelect={1}
-						options={Object.values(MPAA)}
-						name="mpaa"
-						--sms-padding="0.5rem"
-						--sms-border-radius="0.5rem"
-						--sms-bg="#fafaf9"
-						--sms-border="1px solid #d6d3d1"
-					/>
-				</div>
-				<div>
-					<p class="mb-2 text-sm font-medium text-stone-900">Категорії</p>
-					<MultiSelect
-						bind:selected={form.genres}
-						options={data.genres.map((g) => g.title)}
-						name="genres"
-						--sms-padding="0.5rem"
-						--sms-border-radius="0.5rem"
-						--sms-bg="#fafaf9"
-						--sms-border="1px solid #d6d3d1"
-					/>
-				</div>
-				<div>
-					<p class="mb-2 text-sm font-medium text-stone-900">Режисери</p>
-					<MultiSelect
-						bind:selected={form.directors}
-						options={dataStars}
-						name="directors"
-						--sms-padding="0.5rem"
-						--sms-border-radius="0.5rem"
-						--sms-bg="#fafaf9"
-						--sms-border="1px solid #d6d3d1"
-						let:option
-					>
-						<div class="flex items-center gap-4" slot="option">
-							<div
-								style="--img: url({option.image}); z-index: 0;"
-								class="img relative h-10 w-10 rounded-full before:rounded-full before:bg-top"
-							/>
-							{option.label}
-						</div>
-					</MultiSelect>
-				</div>
-				<div>
-					<p class="mb-2 text-sm font-medium text-stone-900">Сценаристи</p>
-					<MultiSelect
-						bind:selected={form.writers}
-						options={dataStars}
-						name="writers"
-						--sms-padding="0.5rem"
-						--sms-border-radius="0.5rem"
-						--sms-bg="#fafaf9"
-						--sms-border="1px solid #d6d3d1"
-						let:option
-					>
-						<div class="flex items-center gap-4" slot="option">
-							<div
-								style="--img: url({option.image}); z-index: 0;"
-								class="img relative h-10 w-10 rounded-full before:rounded-full before:bg-top"
-							/>
-							{option.label}
-						</div>
-					</MultiSelect>
-				</div>
-				<div>
-					<p class="mb-2 text-sm font-medium text-stone-900">Актори</p>
-					<MultiSelect
-						bind:selected={form.actors}
-						options={dataStars}
-						name="directors"
-						--sms-padding="0.5rem"
-						--sms-border-radius="0.5rem"
-						--sms-bg="#fafaf9"
-						--sms-border="1px solid #d6d3d1"
-						let:option
-					>
-						<div class="flex items-center gap-4" slot="option">
-							<div
-								style="--img: url({option.image}); z-index: 0;"
-								class="img relative h-10 w-10 rounded-full before:rounded-full before:bg-top"
-							/>
-							{option.label}
-						</div>
-					</MultiSelect>
-				</div>
+				<Select
+					label="MPAA"
+					bind:selected={form.mpaa}
+					options={Object.values(MPAA)}
+					maxSelect={1}
+					name="mpaa"
+				/>
+				<Select
+					label="Категорії"
+					bind:selected={form.genres}
+					options={data.genres.map((g) => g.title)}
+					name="genres"
+				/>
+
+				<Select
+					label="Режисери"
+					bind:selected={form.directors}
+					options={dataStars}
+					name="directors"
+					let:option
+				>
+					<div class="flex items-center gap-4">
+						<div
+							style="--img: url({option.image}); z-index: 0;"
+							class="img relative h-10 w-10 rounded-full before:rounded-full before:bg-top"
+						/>
+						{option.label}
+					</div>
+				</Select>
+
+				<Select
+					label="Сценаристи"
+					bind:selected={form.writers}
+					options={dataStars}
+					name="writers"
+					let:option
+				>
+					<div class="flex items-center gap-4">
+						<div
+							style="--img: url({option.image}); z-index: 0;"
+							class="img relative h-10 w-10 rounded-full before:rounded-full before:bg-top"
+						/>
+						{option.label}
+					</div>
+				</Select>
+
+				<Select
+					label="Актори"
+					bind:selected={form.actors}
+					options={dataStars}
+					name="directors"
+					let:option
+				>
+					<div class="flex items-center gap-4">
+						<div
+							style="--img: url({option.image}); z-index: 0;"
+							class="img relative h-10 w-10 rounded-full before:rounded-full before:bg-top"
+						/>
+						{option.label}
+					</div>
+				</Select>
 			</div>
 		</div>
 
