@@ -22,7 +22,7 @@ export const POST = (async ({ request }) => {
 	const data = await request.json();
 	const parsed = createMovieSchema.parse(data);
 
-	await prisma.movie.create({
+	const { id } = await prisma.movie.create({
 		data: {
 			...parsed,
 			title: parsed.title.trim(),
@@ -31,7 +31,7 @@ export const POST = (async ({ request }) => {
 			crew: { createMany: { data: parsed.crew } }
 		}
 	});
-	return json({ success: true });
+	return json({ success: true, id });
 }) satisfies RequestHandler;
 
 export const PATCH = (async ({ request }) => {

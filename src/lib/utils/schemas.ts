@@ -32,8 +32,8 @@ export const createMovieSchema = z.object({
 	year: z
 		.number({ required_error: requiredError, invalid_type_error: wrongFormatMessage })
 		.int({ message: wrongFormatMessage })
-		.min(1500, { message: wrongFormatMessage })
-		.max(new Date().getFullYear(), { message: wrongFormatMessage }),
+		.min(1500, { message: 'Мінімальний рік - 1500' })
+		.max(new Date().getFullYear() + 5, { message: wrongFormatMessage }),
 	durationMinutes: z
 		.number({ required_error: requiredError, invalid_type_error: wrongFormatMessage })
 		.int({ message: wrongFormatMessage })
@@ -41,13 +41,14 @@ export const createMovieSchema = z.object({
 	rating: z
 		.number({ required_error: requiredError, invalid_type_error: wrongFormatMessage })
 		.min(0, { message: wrongFormatMessage })
-		.max(10, { message: wrongFormatMessage }),
+		.max(10, { message: 'Максимальний рейтинг - 10' }),
 	mpaa: z.enum(MPAA),
 	image: validUrl,
 	genres: validGenre.array().nonempty({ message: wrongFormatMessage }),
 	crew: z.object({ personId: validUuid, role: z.enum(ROLES) }).array(),
 	trailer: validUrl
 });
+
 export const changeMovieSchema = createMovieSchema.partial().and(validIdObject);
 
 export const createPersonSchema = z.object({
