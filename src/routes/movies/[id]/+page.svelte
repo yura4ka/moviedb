@@ -2,7 +2,7 @@
 	import EditButton from '$lib/components/EditButton.svelte';
 	import RemoveButton from '$lib/components/RemoveButton.svelte';
 	import StarIcon from '$lib/components/StarIcon.svelte';
-	import type { Genre, Movie, Role } from '@prisma/client';
+	import type { TMovie } from '$lib/utils/types';
 
 	type TPerson = {
 		id: string;
@@ -10,13 +10,7 @@
 		image: string;
 	};
 
-	export let data: Movie & {
-		genres: Genre[];
-		crew: {
-			role: Role;
-			person: TPerson;
-		}[];
-	};
+	export let data: TMovie;
 
 	const directors: TPerson[] = [];
 	const writers: TPerson[] = [];
@@ -38,7 +32,7 @@
 		<h1 class="text-5xl font-bold text-stone-800">{data.title}</h1>
 		<div class="flex items-center gap-2">
 			<StarIcon size={7} gap={2} class="mr-4 text-2xl">{data.rating}/10</StarIcon>
-			<EditButton href="./edit/{data.id}" />
+			<EditButton href="./create?id={data.id}" />
 			<RemoveButton />
 		</div>
 	</div>

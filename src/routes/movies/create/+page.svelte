@@ -4,13 +4,29 @@
 	import { z } from 'zod';
 	import Button from '$lib/components/Button.svelte';
 	import { MPAA, type Role } from '@prisma/client';
-	import { addMovie } from '$lib/utils/api';
+	import { addMovie, changeMovie } from '$lib/utils/api';
 	import { goto } from '$app/navigation';
 	import Select from '$lib/components/Select.svelte';
 
 	export let data: {
 		genres: { id: string; title: string }[];
 		stars: { id: string; name: string; image: string }[];
+		id?: string;
+		movie?: {
+			directors: { id: string }[];
+			writers: { id: string }[];
+			actors: { id: string }[];
+			genres: string[];
+			id: string;
+			title: string;
+			description: string;
+			year: string;
+			durationMinutes: string;
+			image: string;
+			rating: string;
+			trailer: string;
+			mpaa: MPAA;
+		};
 	};
 
 	let errors = {
@@ -25,19 +41,21 @@
 
 	$: dataStars = data.stars.map((s) => ({ id: s.id, label: s.name, image: s.image }));
 
+	const { movie } = data;
+
 	let form = {
-		title: '',
-		description: '',
-		year: '',
-		durationMinutes: '',
-		image: '',
-		rating: '',
-		trailer: '',
-		mpaa: [] as MPAA[],
-		genres: [] as string[],
-		directors: [] as { id: string }[],
-		writers: [] as { id: string }[],
-		actors: [] as { id: string }[]
+		title: movie?.title ?? '',
+		description: movie?.description ?? '',
+		year: String(movie?.year ?? ''),
+		durationMinutes: String(movie?.durationMinutes ?? ''),
+		image: movie?.image ?? '',
+		rating: String(movie?.rating ?? ''),
+		trailer: movie?.trailer ?? '',
+		mpaa: (movie?.mpaa ? [movie.mpaa] : []) as [MPAA],
+		genres: movie?.genres ?? [],
+		directors: movie?.directors ?? [],
+		writers: movie?.writers ?? [],
+		actors: movie?.actors ?? []
 	};
 
 	$: checkForm = () =>
@@ -52,7 +70,7 @@
 		for (const p of form.writers) crew.push({ personId: p.id, role: 'WRITER' });
 		for (const p of form.actors) crew.push({ personId: p.id, role: 'STAR' });
 
-		const id = await addMovie({
+		const body = {
 			title: form.title.trim(),
 			description: form.description.trim(),
 			image: form.image.trim(),
@@ -63,14 +81,23 @@
 			mpaa: form.mpaa[0],
 			genres: form.genres.map((g) => ({ title: g })) as [{ title: string }],
 			crew
-		});
+		};
 
-		if (id) goto('/movies/' + id);
+		let isSuccess = false;
+
+		if (data.id !== undefined) {
+			isSuccess = await changeMovie({ id: data.id, ...body });
+		} else {
+			data.id = await addMovie(body);
+			isSuccess = !!data.id;
+		}
+
+		if (isSuccess) goto('/movies/' + data.id);
 	};
 </script>
 
 <svelte:head>
-	<title>Додати фільм</title>
+	<title>{movie ? 'Редагувати' : 'Додати'} фільм</title>
 </svelte:head>
 
 <div class="mb-4 mt-8 grid h-full place-items-center">
@@ -230,6 +257,6 @@
 			</div>
 		</div>
 
-		<Button class="mt-4" disabled={!checkForm()}>Додати</Button>
+		<Button class="mt-4" disabled={!checkForm()}>{movie ? 'Редагувати' : 'Додати'}</Button>
 	</form>
 </div>

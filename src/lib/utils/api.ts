@@ -1,5 +1,6 @@
 import type { z } from 'zod';
 import type { changeMovieSchema, createMovieSchema } from './schemas';
+import type { TMovie } from './types';
 
 const HOST = 'http://localhost:5173/api/';
 
@@ -47,4 +48,12 @@ export async function removeMovie(id: string) {
 	});
 	const data = await result.json();
 	return result.ok && data.success === true;
+}
+
+export async function getMovieById(id: string) {
+	const response = await fetch(GET_MOVIES + '/' + id);
+	if (!response.ok) return undefined;
+
+	const data = await response.json();
+	return data as TMovie;
 }

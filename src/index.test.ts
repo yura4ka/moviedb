@@ -1,4 +1,4 @@
-import { GET_MOVIES, addMovie, changeMovie, removeMovie } from '$lib/utils/api';
+import { GET_MOVIES, addMovie, changeMovie, getMovieById, removeMovie } from '$lib/utils/api';
 import { describe, expect, test } from 'vitest';
 
 describe('movie', () => {
@@ -44,28 +44,28 @@ describe('movie', () => {
 	});
 
 	test('get created movie', async () => {
-		const result = await fetch(GET_MOVIES + `/${createdId}`).then((r) => r.json());
+		const result = await getMovieById(createdId);
 		expect(result).toBeDefined();
 		expect(result).toMatchObject(movieData);
 		expect(result).toHaveProperty('id', createdId);
-		expect(result.genres).toHaveLength(2);
-		expect(result.crew).toHaveLength(3);
+		expect(result?.genres).toHaveLength(2);
+		expect(result?.crew).toHaveLength(3);
 	});
 
 	test('change movie', async () => {
 		const result = await changeMovie({ id: createdId, mpaa: 'R' });
+		movieData.mpaa = 'R';
 		expect(result).toBe(true);
 	});
 
 	test('check movie after change', async () => {
-		const result = await fetch(GET_MOVIES + `/${createdId}`).then((r) => r.json());
-		movieData.mpaa = 'R';
+		const result = await getMovieById(createdId);
 
 		expect(result).toBeDefined();
 		expect(result).toMatchObject(movieData);
 		expect(result).toHaveProperty('id', createdId);
-		expect(result.genres).toHaveLength(2);
-		expect(result.crew).toHaveLength(3);
+		expect(result?.genres).toHaveLength(2);
+		expect(result?.crew).toHaveLength(3);
 	});
 
 	test('remove movie', async () => {

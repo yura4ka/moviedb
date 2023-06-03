@@ -1,11 +1,10 @@
-import { GET_MOVIES } from '$lib/utils/api';
+import { error } from '@sveltejs/kit';
+import { getMovieById } from '$lib/utils/api';
 import type { PageLoad } from './$types';
 
-export const load = (async ({ fetch, url }) => {
+export const load = (async ({ url }) => {
 	const id = url.pathname.split('/').at(-1) || '';
-
-	const response = await fetch(GET_MOVIES + `/${id}`);
-	const data = await response.json();
-
+	const data = await getMovieById(id);
+	if (!data) throw error(404);
 	return data;
 }) satisfies PageLoad;
