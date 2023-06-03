@@ -6,7 +6,7 @@ export const GET = (async ({ params, url }) => {
 	const skip = Number(url.searchParams.get('skip') ?? 0);
 	const limit = Number(url.searchParams.get('limit') ?? 20);
 
-	const [movies, total] = await prisma.$transaction([
+	const [movies, total, { title }] = await prisma.$transaction([
 		prisma.movie.findMany({
 			where: { genres: { some: { id } } },
 			skip,
@@ -15,8 +15,9 @@ export const GET = (async ({ params, url }) => {
 				genres: { orderBy: { title: 'asc' } }
 			}
 		}),
-		prisma.movie.count({ where: { genres: { some: { id } } } })
+		prisma.movie.count({ where: { genres: { some: { id } } } }),
+		prisma.genre.findUniqueOrThrow({ where: { id }, select: { title: true } })
 	]);
 
-	return json({ movies, total });
+	return json({ movies, total, title, id });
 }) satisfies RequestHandler;
