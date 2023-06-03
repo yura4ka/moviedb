@@ -11,3 +11,9 @@ export type TMovie = Movie & {
 		};
 	}[];
 };
+
+export type TGenre = {
+	id: string;
+	title: string;
+	movies: (Movie & { genres: Genre[] })[];
+};

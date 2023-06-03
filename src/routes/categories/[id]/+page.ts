@@ -1,11 +1,10 @@
-import { GET_GENRES } from '$lib/utils/api';
+import { getGenreById } from '$lib/utils/api';
 import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 
-export const load = (async ({ fetch, url }) => {
+export const load = (async ({ url }) => {
 	const id = url.pathname.split('/').at(-1) || '';
-	const response = await fetch(GET_GENRES + '/' + id);
-	if (!response.ok) throw error(404);
-	const data = response.json();
+	const data = await getGenreById(id);
+	if (!data) throw error(404);
 	return data;
 }) satisfies PageLoad;

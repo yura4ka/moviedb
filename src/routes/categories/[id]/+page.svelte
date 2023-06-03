@@ -2,13 +2,9 @@
 	import EditButton from '$lib/components/EditButton.svelte';
 	import MovieCard from '$lib/components/MovieCard.svelte';
 	import RemoveButton from '$lib/components/RemoveButton.svelte';
-	import type { Genre, Movie } from '@prisma/client';
+	import type { TGenre } from '$lib/utils/types';
 
-	export let data: {
-		id: string;
-		title: string;
-		movies: (Movie & { genres: Genre[] })[];
-	};
+	export let data: TGenre;
 </script>
 
 <svelte:head>

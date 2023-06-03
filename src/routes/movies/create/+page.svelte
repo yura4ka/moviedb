@@ -105,7 +105,9 @@
 		on:submit|preventDefault={submitForm}
 		class="relative grid w-[56rem] max-w-4xl gap-2 rounded-lg border p-6 shadow"
 	>
-		<h1 class="absolute -top-5 left-5 bg-white text-2xl font-bold text-stone-800">Додати фільм</h1>
+		<h1 class="absolute -top-5 left-5 bg-white text-2xl font-bold text-stone-800">
+			{movie ? 'Редагувати' : 'Додати'} фільм
+		</h1>
 		<div class="grid grid-cols-2 items-start gap-8">
 			<div class="grid gap-2">
 				<Input

@@ -1,6 +1,6 @@
 import type { z } from 'zod';
 import type { changeMovieSchema, createMovieSchema } from './schemas';
-import type { TMovie } from './types';
+import type { TGenre, TMovie } from './types';
 
 const HOST = 'http://localhost:5173/api/';
 
@@ -56,4 +56,39 @@ export async function getMovieById(id: string) {
 
 	const data = await response.json();
 	return data as TMovie;
+}
+
+export async function getGenreById(id: string) {
+	const response = await fetch(GET_GENRES + '/' + id);
+	if (!response.ok) return undefined;
+
+	const data = await response.json();
+	return data as TGenre;
+}
+
+export async function addGenre(title: string) {
+	const result = await fetch(GET_GENRES, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify({ title })
+	});
+
+	let id = undefined;
+	if (result.ok) id = (await result.json()).id;
+
+	return id as string | undefined;
+}
+
+export async function changeGenre(id: string, title: string) {
+	const result = await fetch(GET_GENRES, {
+		method: 'PATCH',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify({ id, title })
+	});
+	const data = await result.json();
+	return result.ok && data.success === true;
 }
