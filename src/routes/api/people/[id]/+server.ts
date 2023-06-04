@@ -8,7 +8,10 @@ export const GET = (async ({ params }) => {
 		where: { id },
 		include: {
 			movieCrew: {
-				select: { movie: { select: { id: true, title: true, image: true } }, role: true }
+				select: {
+					movie: { select: { id: true, title: true, image: true, year: true, rating: true } },
+					role: true
+				}
 			}
 		}
 	});

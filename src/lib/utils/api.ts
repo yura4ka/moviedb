@@ -1,6 +1,6 @@
 import type { z } from 'zod';
 import type { changeMovieSchema, createMovieSchema } from './schemas';
-import type { TGenre, TMovie } from './types';
+import type { TGenre, TMovie, TPersonFull } from './types';
 
 const HOST = 'http://localhost:5173/api/';
 
@@ -91,4 +91,11 @@ export async function changeGenre(id: string, title: string) {
 	});
 	const data = await result.json();
 	return result.ok && data.success === true;
+}
+
+export async function getPersonById(id: string) {
+	const response = await fetch(GET_STARS + '/' + id);
+	if (!response.ok) return undefined;
+	const data = await response.json();
+	return data as TPersonFull;
 }

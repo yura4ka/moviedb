@@ -1,4 +1,4 @@
-import type { Genre, Movie, Role } from '@prisma/client';
+import type { Genre, Movie, Person, Role } from '@prisma/client';
 
 export type TMovie = Movie & {
 	genres: Genre[];
@@ -31,4 +31,17 @@ export type TPerson = {
 	bio: string;
 	birthday: Date;
 	image: string;
+};
+
+export type TPersonFull = Person & {
+	movieCrew: {
+		movie: {
+			id: string;
+			title: string;
+			image: string;
+			year: number;
+			rating: number;
+		};
+		role: Role;
+	}[];
 };
