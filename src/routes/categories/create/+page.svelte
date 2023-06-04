@@ -1,12 +1,10 @@
 <script lang="ts">
 	import Input from '$lib/components/Input.svelte';
-	import { createGenreSchema, createMovieSchema } from '$lib/utils/schemas';
-	import { z } from 'zod';
+	import { createGenreSchema } from '$lib/utils/schemas';
 	import Button from '$lib/components/Button.svelte';
 	import type { Genre } from '@prisma/client';
-	import { addGenre, addMovie, changeGenre, changeMovie } from '$lib/utils/api';
+	import { addGenre, changeGenre,  } from '$lib/utils/api';
 	import { goto } from '$app/navigation';
-	import Select from '$lib/components/Select.svelte';
 
 	export let data: {
 		genres: Genre[];

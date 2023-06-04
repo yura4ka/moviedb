@@ -1,5 +1,10 @@
 import type { z } from 'zod';
-import type { changeMovieSchema, createMovieSchema } from './schemas';
+import type {
+	changeMovieSchema,
+	changePersonSchema,
+	createMovieSchema,
+	createPersonSchema
+} from './schemas';
 import type { TGenre, TMovie, TPersonFull } from './types';
 
 const HOST = 'http://localhost:5173/api/';
@@ -10,6 +15,9 @@ export const GET_STARS = HOST + 'people';
 
 type TAddMovie = z.infer<typeof createMovieSchema>;
 type TChangeMovie = z.infer<typeof changeMovieSchema>;
+
+type TAddPerson = z.infer<typeof createPersonSchema>;
+type TChangePerson = z.infer<typeof changePersonSchema>;
 
 export async function addMovie(movie: TAddMovie) {
 	const result = await fetch(GET_MOVIES, {
@@ -98,4 +106,31 @@ export async function getPersonById(id: string) {
 	if (!response.ok) return undefined;
 	const data = await response.json();
 	return data as TPersonFull;
+}
+
+export async function addPerson(person: TAddPerson) {
+	const result = await fetch(GET_STARS, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify(person)
+	});
+
+	let id = undefined;
+	if (result.ok) id = (await result.json()).id;
+
+	return id as string | undefined;
+}
+
+export async function changePerson(person: TChangePerson) {
+	const result = await fetch(GET_STARS, {
+		method: 'PATCH',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify(person)
+	});
+	const data = await result.json();
+	return result.ok && data.success === true;
 }
