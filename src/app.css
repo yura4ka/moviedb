@@ -14,9 +14,11 @@
 	height: 100%;
 	width: 100%;
 	position: absolute;
+	background: linear-gradient(150deg, #d6d3d1 0%, #e7e5e4 100%);
 	background-image: var(--img);
 	z-index: -20;
 	background-repeat: no-repeat;
 	background-position: center;
 	background-size: cover;
+	background-color: #e7e5e4;
 }

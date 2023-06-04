@@ -17,3 +17,18 @@ export type TGenre = {
 	title: string;
 	movies: (Movie & { genres: Genre[] })[];
 };
+
+type TPersonMovie = {
+	movie: { id: string; title: string; image: string };
+};
+
+export type TPerson = {
+	asDirector: TPersonMovie[];
+	asStar: TPersonMovie[];
+	asWriter: TPersonMovie[];
+	id: string;
+	name: string;
+	bio: string;
+	birthday: Date;
+	image: string;
+};
