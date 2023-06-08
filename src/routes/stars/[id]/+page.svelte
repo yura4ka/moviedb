@@ -1,10 +1,17 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import EditButton from '$lib/components/EditButton.svelte';
 	import RemoveButton from '$lib/components/RemoveButton.svelte';
 	import StarIcon from '$lib/components/StarIcon.svelte';
+	import { removePerson } from '$lib/utils/api';
 	import type { TPersonFull } from '$lib/utils/types';
 
 	export let data: TPersonFull;
+
+	const onRemove = async () => {
+		const result = await removePerson(data.id);
+		if (result) goto('/stars');
+	};
 </script>
 
 <svelte:head>
@@ -24,7 +31,7 @@
 				</h1>
 				<div class="flex gap-2">
 					<EditButton href="/stars/create?id={data.id}" />
-					<RemoveButton />
+					<RemoveButton text="людину {data.name}" onAccept={onRemove} />
 				</div>
 			</div>
 			<p class="pb-4 text-justify text-xl text-stone-700">{data.bio}</p>

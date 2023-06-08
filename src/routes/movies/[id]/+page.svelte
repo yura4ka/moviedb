@@ -1,7 +1,9 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import EditButton from '$lib/components/EditButton.svelte';
 	import RemoveButton from '$lib/components/RemoveButton.svelte';
 	import StarIcon from '$lib/components/StarIcon.svelte';
+	import { removeMovie } from '$lib/utils/api';
 	import type { TMovie } from '$lib/utils/types';
 
 	type TPerson = {
@@ -21,6 +23,11 @@
 		else if (p.role === 'STAR') stars.push(p.person);
 		else if (p.role === 'WRITER') writers.push(p.person);
 	}
+
+	const onRemove = async () => {
+		const result = await removeMovie(data.id);
+		if (result) goto('/');
+	};
 </script>
 
 <svelte:head>
@@ -33,7 +40,7 @@
 		<div class="flex items-center gap-2">
 			<StarIcon size={7} gap={2} class="mr-4 text-2xl">{data.rating}/10</StarIcon>
 			<EditButton href="./create?id={data.id}" />
-			<RemoveButton />
+			<RemoveButton text="фільм {data.title}" onAccept={onRemove} />
 		</div>
 	</div>
 

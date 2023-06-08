@@ -101,6 +101,18 @@ export async function changeGenre(id: string, title: string) {
 	return result.ok && data.success === true;
 }
 
+export async function removeGenre(id: string) {
+	const result = await fetch(GET_GENRES, {
+		method: 'DELETE',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify({ id })
+	});
+	const data = await result.json();
+	return result.ok && data.success === true;
+}
+
 export async function getPersonById(id: string) {
 	const response = await fetch(GET_STARS + '/' + id);
 	if (!response.ok) return undefined;
@@ -130,6 +142,18 @@ export async function changePerson(person: TChangePerson) {
 			'Content-Type': 'application/json'
 		},
 		body: JSON.stringify(person)
+	});
+	const data = await result.json();
+	return result.ok && data.success === true;
+}
+
+export async function removePerson(id: string) {
+	const result = await fetch(GET_STARS, {
+		method: 'DELETE',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify({ id })
 	});
 	const data = await result.json();
 	return result.ok && data.success === true;
